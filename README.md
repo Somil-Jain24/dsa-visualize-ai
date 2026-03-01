@@ -10,3 +10,5 @@
 - Documented sorting visualizer architecture
 
 - Added UI interaction and controls guide
+
+- Initialized DSA Visualizer repository
