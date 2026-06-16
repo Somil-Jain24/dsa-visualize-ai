@@ -1,18 +1,211 @@
+# 🌌 DSA Visualizer AI
 
-- Added project overview and goals
+<div align="center">
 
-- Prepared search algorithm visualization plan
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
+[![TanStack Router](https://img.shields.io/badge/TanStack-Router-FF4154?style=for-the-badge&logo=react&logoColor=white)](https://tanstack.com/router/v1)
+[![Groq API](https://img.shields.io/badge/Groq_API-Llama_3.1-orange?style=for-the-badge&logo=google-cloud&logoColor=white)](https://groq.com/)
 
-- Created landing page documentation
+**An interactive, AI-augmented, and gamified Data Structures & Algorithms (DSA) compiler sandbox and visualizer.**
 
-- Updated README with deployment instructions
+*Step inside our compiler workstation, trace custom code, draw nodes on an SVG canvas, and claim XP rewards.*
 
-- Documented sorting visualizer architecture
+[Explore Features](#-key-features) • [How It Works](#-system-architecture) • [Getting Started](#-getting-started) • [Codebase Walkthrough](#-codebase-structure)
 
-- Added UI interaction and controls guide
+</div>
 
-- Initialized DSA Visualizer repository
+---
 
-- Completed MVP documentation
+## 📸 Showcase & UI Gallery
 
-- Added array animation workflow notes
+Discover a futuristic dark-mode terminal workspace equipped with glassmorphic cards, glowing particle waves, and real-time computation logs.
+
+<div align="center">
+
+### 🌌 Landing Workspace
+*The portal into VisualDSA, featuring ambient glowing orbs and interactive orbital rings.*
+![Landing Showcase](./Landing.png)
+
+### 📈 Gamified Arena Dashboard
+*Track your mastery, streak count, and daily XP progression visualized via Recharts.*
+![Arena Dashboard](./Arena.png)
+
+### 🔬 Interactive Sandbox Engine
+*A Monaco Editor playground where you can write custom JS code, run tests, and generate step-by-step trace frames.*
+![Sandbox Playground](./Sandbox.png)
+
+### 📊 Algorithmic Playback
+*Visualize arrays, linked lists, binary trees, and graphs. Scrub, pause, and step through execution lines.*
+![Visualizer Stage](./Inside%20Visualizer.png)
+
+</div>
+
+---
+
+## 🚀 Key Features
+
+* **⚡ Step-by-Step Execution**: Complete control over runtime compilation. Play, pause, scrub forward, and step backward through every line of code at your own pace.
+* **🔬 Monaco Code Playground**: Write your own algorithm solutions in Javascript, C++, or Java. Input custom datasets and let the engine compile and execute them.
+* **✏️ Interactive Canvas Editor**: Create custom test cases dynamically! Draw graph edges, insert binary tree nodes, or structure array lists directly on an SVG drawing canvas.
+* **🎮 Gamified Arena**: Challenge yourself across 4 interactive game modes:
+  * **Quizzes**: Core concept multiple-choice questions.
+  * **Guess the Output**: Analyze code snippets and predict what gets logged.
+  * **Predict the Step**: Predict array transitions after specific sorting passes.
+  * **Complexity Match**: Match algorithms to their respective Big-O time and space notations.
+* **🧠 AI Quiz Master (Groq)**: Integrated with the Groq API (using `llama-3.1-8b-instant`), the application generates unique, topic-focused DSA questions on the fly, preventing repetition via a session-based cache.
+* **🏆 Achievements & Badges**: Earn XP, build daily streaks, and unlock 8 unique badges (e.g. *Algo Sage*, *Centurion*, *Hat-trick*, *Completionist*), all persisted locally in your browser.
+
+---
+
+## 🛠 System Architecture
+
+The following diagram illustrates how the system intercepts code runtime operations to generate visual frames:
+
+```mermaid
+graph TD
+    A[Monaco Code Editor / User Script] -->|User executes solution| B[Sandbox Engine]
+    B -->|JS Proxy Interceptor| C[Read/Write Hooks]
+    C -->|Generate Trace Frames| D[DSFrame Array]
+    D -->|Step-by-Step Playback| E[Interactive Visualizer]
+    F[User Interactions] -->|Quizzes & Puzzles| G[Gamified Arena]
+    H[Groq API Proxy] -->|Server Function| I[Llama-3.1-8b]
+    I -->|Dynamic Question Pool| G
+    G -->|Track XP & Streaks| J[LocalStorage / Recharts Dashboard]
+```
+
+### The Proxy Interceptor Engine
+When a user runs custom code in the sandbox, the engine wraps native structures (such as `Array`, `Node`, or `Graph`) in a Javascript **Proxy**.
+1. Every read (`arr[i]`) and write (`arr[i] = temp`) operation is intercepted.
+2. The proxy logs the memory address, active variables, and current execution line.
+3. This generates a list of `DSFrame` items, which are played back sequentially on the canvas to represent transitions.
+
+---
+
+## 💻 Tech Stack
+
+* **Core**: React 19, TypeScript 5.8
+* **Full-stack & Routing**: TanStack Start (full-stack framework built on TanStack Router + Vite 7)
+* **Styling**: Tailwind CSS v4, Vanilla CSS variables, glassmorphism UI
+* **Editor**: `@monaco-editor/react` (Monaco Editor)
+* **Charts & Graphs**: Recharts (for daily progress logs and Big-O complexity charts)
+* **LLM Engine**: Groq API (TanStack server functions proxying Groq LLM requests)
+* **Icons**: Lucide React
+
+---
+
+## 📂 Codebase Structure
+
+```bash
+DSAV/
+├── public/                 # Static asset definitions
+├── src/
+│   ├── components/
+│   │   ├── ui/             # Radix UI + shadcn primitive definitions
+│   │   ├── Header.tsx      # Navigation & visual branding
+│   │   ├── Footer.tsx      # Workspace details
+│   │   ├── SortVisualizer.tsx # Dedicated sorting visualizer controller
+│   │   ├── MultiVisualizer.tsx # Graph, tree, list, and stack visual renderers
+│   │   └── InteractiveCanvasEditor.tsx # SVG canvas node editor
+│   ├── hooks/
+│   │   └── use-mobile.tsx  # Responsive design layout helpers
+│   ├── lib/
+│   │   ├── algorithms/     # Logic files for core algorithms
+│   │   │   ├── bubbleSort.ts
+│   │   │   ├── mergeSort.ts
+│   │   │   ├── registry.ts # Central algorithm definitions
+│   │   │   └── types.ts
+│   │   ├── dsa/            # Data structure definitions & translations
+│   │   │   ├── array.ts
+│   │   │   ├── graph.ts
+│   │   │   ├── tree.ts
+│   │   │   └── stack.ts
+│   │   ├── arenaContent.ts # Batch templates for quizzes and code guessing
+│   │   ├── gamification.ts # XP tracking, streaks, and badge logic
+│   │   └── groqQuiz.ts     # AI quiz generators calling Groq model
+│   └── routes/
+│       ├── __root.tsx      # Main layout shell
+│       ├── index.tsx       # Landing page containing interactive workstation
+│       ├── learn.tsx       # Interactive tutorials for structures
+│       ├── practice.tsx    # Dedicated practice modules
+│       ├── arena.tsx       # Gamified challenges & Recharts tracking
+│       ├── sandbox.tsx     # Monaco Editor playground
+│       └── visualizer.tsx  # Standalone visualizer controller
+├── vite.config.ts          # Vite configuration
+├── package.json            # Script runs & dependencies
+└── wrangler.jsonc          # Cloudflare deployment settings
+```
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to set up the project locally:
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) (v18+) and [npm](https://www.npmjs.com/) (or [Bun](https://bun.sh/)) installed.
+
+### 2. Clone the Repository
+```bash
+git clone https://github.com/shreyanshsharma-1210/dsa-visualize-ai.git
+cd dsa-visualize-ai
+```
+
+### 3. Install Dependencies
+```bash
+npm install
+# or if using Bun
+bun install
+```
+
+### 4. Setup Environment Variables
+Create a `.env` file in the root of the project (referencing `.env.example`):
+```env
+# Optional: Set your Groq API Key to enable AI-generated quizzes in the Arena
+VITE_GROQ_API_KEY="your-groq-api-key-here"
+VITE_GROQ_MODEL="llama-3.1-8b-instant"
+```
+
+### 5. Run the Development Server
+```bash
+npm run dev
+# or if using Bun
+bun dev
+```
+Open your browser and navigate to `http://localhost:3000` to start exploring the visualizer.
+
+### 6. Build & Production Preview
+To build the application for deployment:
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 🏆 Gamification Achievements
+
+The engine tracks progress locally and awards **badges** based on user accomplishments:
+
+| Badge | Title | Requirement |
+| :---: | :---: | :--- |
+| 🩸 | **First Blood** | Solve your first puzzle in the Arena. |
+| 🎩 | **Hat-trick** | Build a consecutive streak of 3 correct answers. |
+| 🔥 | **On Fire** | Build a consecutive streak of 7 correct answers. |
+| 🛡️ | **Centurion** | Earn your first 100 XP points. |
+| 🧙‍♂️ | **Algo Sage** | Accumulate 500 XP points. |
+| 🎯 | **Tenacious** | Log at least 25 puzzle attempts in the Arena. |
+| 📦 | **Batch Clear** | Achieve a perfect 100% score on any batch run. |
+| 👑 | **Completionist** | Score 100% on 3 different challenge batches. |
+
+---
+
+## 🤝 Contributing
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/shreyanshsharma-1210/dsa-visualize-ai/issues).
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
